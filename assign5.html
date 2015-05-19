@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wether Web</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+	p {
+    font-size: 20px;
+}
+#Check{
+	font-size: 10px;
+}
+</style>
+
+</head>
+
+<body>
+<div class="container">
+<h1>Taiwan's Weather</h1>
+<P>Click The Button To Select The City~~</P>   
+
+   <div class="dropdown">
+  <button class="btn btn-defult dropdown-toggle" type="button" data-toggle="dropdown">Select Your City~~
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a href="#TP" onclick="TPFunction()">台北市</a></li>
+    <li><a href="#NTP" onclick="NTPFunction()">新北市</a></li>
+    <li><a href="#TC" onclick="TCFunction()">台中市</a></li>
+    <li><a href="#TN" onclick="TNFunction()">台南市</a></li>
+    <li><a href="#KU" onclick="KUFunction()">高雄市</a></li>
+    <li><a href="#KL" onclick="KLFunction()">基隆市</a></li>
+    <li><a href="#TU" onclick="TUFunction()">桃園市</a></li>
+    <li><a href="#NZ" onclick="NZFunction()">新竹市</a></li>
+    <li><a href="#NZ2" onclick="NZ2Function()">新竹縣</a></li>
+    <li><a href="#ML" onclick="MLFunction()">苗栗縣</a></li>
+    <li><a href="#GH" onclick="GHFunction()">彰化縣</a></li>
+    <li><a href="#NT" onclick="NTFunction()">南投縣</a></li>
+    <li><a href="#UL" onclick="ULFunction()">雲林縣</a></li>
+    <li><a href="#GE" onclick="GEFunction()">嘉義市</a></li>
+    <li><a href="#GE2" onclick="GE2Function()">嘉義縣</a></li>
+    <li><a href="#PD" onclick="PDFunction()">屏東縣</a></li>
+    <li><a href="#IL" onclick="ILFunction()">宜蘭縣</a></li>
+    <li><a href="#HL" onclick="HLFunction()">花蓮縣</a></li>
+    <li><a href="#TD" onclick="TDFunction()">台東縣</a></li>
+    <li><a href="#PH" onclick="PHFunction()">澎湖縣</a></li>
+    <li><a href="#KM" onclick="KMFunction()">金門縣</a></li>
+    <li><a href="#LG" onclick="LGFunction()">連江縣</a></li>
+  </ul>
+   </div>
+   
+</div>
+
+<div class="container">
+	
+
+	<h1 id="City"></h1>
+	<h2 id="Date"></h2>
+    <p id="Tem"></p>
+    <p id="Cond"></p>
+    <P><br></P>
+    <P><br></P>
+    
+    <table style="width:100%">
+  <tr>
+    <td><h3 id="Date_2"></h3></td>
+    <td><h3 id="Date_3"></h3></td>
+    <td><h3 id="Date_4"></h3></td>
+  </tr>
+  <tr>
+    <td><p id="Tem_2"></p></td>
+    <td><p id="Tem_3"></p></td> 
+    <td><p id="Tem_4"></p></td>
+  </tr>
+  <tr>
+  	<td><p id="Cond_2"></p></td>
+  	<td><p id="Cond_3"></p></td>
+  	<td><p id="Cond_4"></p></td>
+  </tr>
+</table>
+<br><br><br>
+    <P id="Check"></P>
+
+<script>//Date Counting
+function DateF(){
+	var d=new Date();
+	var m=new Date();
+	document.getElementById('Date').innerHTML=m.getMonth()+1+"/"+d.getDate();
+	document.getElementById('Date_2').innerHTML=m.getMonth()+1+"/"+(d.getDate()+1);
+	document.getElementById('Date_3').innerHTML=m.getMonth()+1+"/"+(d.getDate()+2);
+	document.getElementById('Date_4').innerHTML=m.getMonth()+1+"/"+(d.getDate()+3);
+}
+</script>
+
+
+<script>
+
+
+
+
+
+function TPFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22taipei%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Taipei  
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);  
+$('#City').text("台北市")  
+  }
+
+});
+DateF();
+}
+//------------------------------------------------------------------------------
+function NTPFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E6%96%B0%E5%8C%97%E5%B8%82%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//NEW Taipei  
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);    
+document.getElementById('City').innerHTML="新北市" 
+  }
+
+});
+DateF();
+}
+//------------------------------------------------------------------------------------
+function TCFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%8F%B0%E4%B8%AD%E5%B8%82%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Taichung 
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);   
+document.getElementById('City').innerHTML="台中市" 
+  }
+
+});DateF();
+}
+//========================================================================================
+function TNFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%8F%B0%E5%8D%97%E5%B8%82%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Tainan
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="台南市" 
+  }
+
+});DateF();
+
+}
+//====================================================================================
+function KUFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E9%AB%98%E9%9B%84%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Kaohsiung
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="高雄市"
+  }
+
+});DateF();
+
+}
+//==========================================================================================
+function KLFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%9F%BA%E9%9A%86%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Keelung
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="基隆市"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function TUFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E4%B8%AD%E5%A3%A2%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Taoyuna
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="桃園市"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function NZFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E6%96%B0%E7%AB%B9%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Hsinchu
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="新竹市"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function NZ2Function(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E6%96%B0%E7%AB%B9%E7%B8%A3%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Hsinchu2
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="新竹縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function GHFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%BD%B0%E5%8C%96%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Changhua
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="彰化縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function NTFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%8D%97%E6%8A%95%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Nantou
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="南投縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function MLFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E8%8B%97%E6%A0%97%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Miaoli
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="苗栗縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function ULFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E9%9B%B2%E6%9E%97%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Yunlin
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="雲林縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function GEFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%98%89%E7%BE%A9%E5%B8%82%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Chiaiy
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="嘉義市"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function GE2Function(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%98%89%E7%BE%A9%E7%B8%A3%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Chiaiy2
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="嘉義縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function GE2Function(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%98%89%E7%BE%A9%E7%B8%A3%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Chiaiy2
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="嘉義縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function PDFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%B1%8F%E6%9D%B1%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Pingtung
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="嘉義縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function PDFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%B1%8F%E6%9D%B1%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Pingtung
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="屏東縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function ILFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%AE%9C%E8%98%AD%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Ilan
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="宜蘭縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function HLFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%AE%9C%E8%98%AD%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Hualien
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="花蓮縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function HLFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E8%8A%B1%E8%93%AE%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Hualien
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="花蓮縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function TDFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E5%8F%B0%E6%9D%B1%E5%B8%82%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+//Taitung
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="台東縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function PHFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E6%BE%8E%E6%B9%96%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+// Penghu 
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="澎湖縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function KMFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E9%87%91%E9%96%80%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+// Kinmen
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="金門縣"
+  }
+});DateF();
+
+}
+//==============================================================================================
+function LGFunction(){	
+	$.ajax({
+  url:'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E9%80%A3%E6%B1%9F%E7%B8%A3%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys', success: function(json_weather){
+// Lianjiang
+
+$('#Tem').text("攝氏"+((json_weather.query.results.channel.item.condition.temp-32)*56/100)+"度");
+$('#Cond').text(json_weather.query.results.channel.item.condition.text);
+$('#Tem_2').text("攝氏"+((json_weather.query.results.channel.item.forecast[1].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[1].high-32)*55/100)+"度");
+$('#Cond_2').text(json_weather.query.results.channel.item.forecast[1].text);
+$('#Tem_3').text("攝氏"+((json_weather.query.results.channel.item.forecast[2].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[2].high-32)*55/100)+"度");
+$('#Cond_3').text(json_weather.query.results.channel.item.forecast[2].text);
+$('#Tem_4').text("攝氏"+((json_weather.query.results.channel.item.forecast[3].low-32)*56/100)+"~"+((json_weather.query.results.channel.item.forecast[3].high-32)*55/100)+"度");
+$('#Cond_4').text(json_weather.query.results.channel.item.forecast[3].text);
+$('#Check').text(json_weather.query.results.channel.item.title+json_weather.query.results.channel.item.pubDate);      
+document.getElementById('City').innerHTML="連江縣"
+  }
+});DateF();
+
+}
+
+
+
+
+
+
+</script>
+
+
+</div>
+
+</body>
+</html>
